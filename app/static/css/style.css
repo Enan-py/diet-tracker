@@ -318,3 +318,26 @@ th {
     background-color: #2cb67d !important;
     color: white;
 }
+/* Mobile Responsive Adjustments */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    .nav-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links {
+        font-size: 0.9rem;
+        gap: 10px;
+    }
+
+    /* Make stats grid stack or fit better */
+    .history-stats-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2x2 grid on mobile */
+    }
+}
