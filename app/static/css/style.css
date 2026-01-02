@@ -192,33 +192,40 @@ th {
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
 }
-/* This is what was missing! */
 #search-results {
     position: absolute;
-    top: 100%; /* Sits exactly under the search bar */
+    top: 100%;
     left: 0;
     width: 100%;
-    background-color: white !important; /* Must be white to see it */
-    border: 1px solid #2cb67d; /* Green border to match your theme */
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    background-color: #ffffff !important;
+    border: 2px solid #2cb67d; /* Slightly thicker for visibility */
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     max-height: 250px;
     overflow-y: auto;
-    z-index: 9999; /* Ensures it floats on top of everything else */
-    display: none; /* JS will change this to 'block' when you type */
+    z-index: 10000; /* Extremely high to stay on top */
+    display: none;
+    box-sizing: border-box; /* CRITICAL: keeps width 100% inside the parent */
 }
 
 .food-item {
-    padding: 12px;
-    color: #333;
+    padding: 15px; /* Bigger "tap target" for fingers */
+    color: #1a1a1a;
     cursor: pointer;
-    border-bottom: 1px solid #eee;
-    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 1rem;
+    transition: background 0.2s;
+    /* Prevents the phone from highlighting the whole block in blue when tapped */
+    -webkit-tap-highlight-color: transparent; 
 }
 
-.food-item:hover {
-    background-color: #f0fdf4;
-    color: #2cb67d;
+.food-item:last-child {
+    border-bottom: none;
+}
+
+.food-item:active {
+    background-color: #eafaf1; /* Visual feedback for a finger tap */
 }
 /* Navbar Styles */
 .navbar {
