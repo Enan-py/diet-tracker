@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile & Goals</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+        <span class="logo">🍏 DietTracker</span>
+        <div class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="/diet" class="nav-item">Add Meal</a>
+            <a href="/info" class="nav-item">Profile</a>
+            <a href="/summary" class="nav-item">History</a>
+        </div>
+    </div>
+    <div class="global-progress-container">
+        <div id="global-progress-fill" class="global-progress-fill"></div>
+    </div>
+</nav>
+  <div class="container">
+    <h1 class="title">👤 Personal Info</h1>
+    
+    <section class="form-section">
+      <div class="macro-inputs">
+        <div class="input-group">
+          <label>Weight (kg)</label>
+          <input type="number" id="weight" placeholder="70">
+        </div>
+        <div class="input-group">
+          <label>Height (cm)</label>
+          <input type="number" id="height" placeholder="175">
+        </div>
+        <div class="input-group">
+          <label>Age</label>
+          <input type="number" id="age" placeholder="25">
+        </div>
+        <div class="input-group">
+          <label>Activity Level</label>
+          <select id="activity">
+            <option value="1.2">Sedentary (Office job)</option>
+            <option value="1.375">Light (1-2 days/week)</option>
+            <option value="1.55">Moderate (3-5 days/week)</option>
+            <option value="1.725">Heavy (6-7 days/week)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <label>Your Goal</label>
+        <select id="goal" style="width: 100%;">
+          <option value="lose">Lose Weight (Cutting)</option>
+          <option value="maintain">Maintain Weight</option>
+          <option value="gain">Gain Muscle (Bulking)</option>
+        </select>
+      </div>
+
+      <button id="saveInfo" class="btn" style="width: 100%; margin-top: 20px;">Calculate & Save My Targets</button>
+    </section>
+
+    <section id="results" class="hidden">
+        <h3>Your Calculated Targets</h3>
+        <div id="target-display"></div>
+        <button onclick="window.location.href='/diet'" class="btn secondary">Go to Diet Tracker</button>
+    </section>
+  </div>
+
+  <script>
+    const saveBtn = document.getElementById('saveInfo');
+    saveBtn.onclick = async () => {
+        const data = {
+            weight: document.getElementById('weight').value,
+            height: document.getElementById('height').value,
+            age: document.getElementById('age').value,
+            activity: document.getElementById('activity').value,
+            goal: document.getElementById('goal').value
+        };
+        
+        // This will save to localStorage for now so the Diet page can read it
+        localStorage.setItem('userStats', JSON.stringify(data));
+        
+        // Basic Mifflin-St Jeor Formula example
+        let bmr = (10 * data.weight) + (6.25 * data.height) - (5 * data.age) + 5;
+        let tdee = Math.round(bmr * data.activity);
+        
+        document.getElementById('results').classList.remove('hidden');
+        document.getElementById('target-display').innerHTML = `
+            <p>Your Maintenance Calories: <strong>${tdee} kcal</strong></p>
+            <p>To <strong>${data.goal}</strong>, you should aim for approximately 
+               <strong>${data.goal === 'lose' ? tdee - 500 : data.goal === 'gain' ? tdee + 300 : tdee} kcal</strong>.</p>
+        `;
+    };
+  </script>
+  <script src="/static/js/global.js"></script>
+</body>
+</html>

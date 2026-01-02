@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diet Tracker</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+        <span class="logo">🍏 DietTracker</span>
+        <div class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="/diet" class="nav-item">Add Meal</a>
+            <a href="/info" class="nav-item">Profile</a>
+            <a href="/summary" class="nav-item">History</a>
+        </div>
+    </div>
+    <div class="global-progress-container">
+        <div id="global-progress-fill" class="global-progress-fill"></div>
+    </div>
+</nav>
+  <div class="container">
+    <h1 class="title">🍏 Diet Tracker</h1>
+
+    <section id="meal-builder">
+      <h3>Add Foods to Your Meal</h3>
+      <div id="meal-input-container" class="meal-input-container">
+        <div class="search-wrapper">
+          <input type="text" id="foodQuery" placeholder="Search food (e.g., rice)..." autocomplete="off">
+          <div id="search-results" class="dropdown hidden"></div>
+        </div>
+      </div>
+
+      <div class="action-buttons" style="margin-top: 20px;">
+        <button id="calculateMeal" class="btn">Calculate Total Diet</button>
+        <button id="addCustomBtn" class="btn secondary">Add Custom Food</button>
+      </div>
+    </section>
+
+    <section id="meal-summary" class="hidden">
+      <h3>Meal Summary</h3>
+      <table id="meal-table">
+        <thead>
+          <tr>
+            <th>Food</th>
+            <th>Grams</th>
+            <th>Kcal</th>
+            <th>Protein</th>
+            <th>Carbohydrate</th>
+            <th>Fat</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr style="font-weight:bold;">
+            <td>Total</td>
+            <td>-</td>
+            <td id="total-calories"></td>
+            
+            <td id="total-protein"></td>
+            <td id="total-carbs"></td>
+            <td id="total-fat"></td>
+          </tr>
+        </tfoot>
+      </table>
+      <p id="meal-advice" class="advice"></p>
+    </section>
+
+    <section id="custom-food-form" class="hidden form-section">
+      <h3>Add Custom Food to Database</h3>
+      <input type="text" id="customName" placeholder="Food Name" class="input">
+      <div class="macro-inputs">
+        <input type="number" id="customCalories" placeholder="Kcal/100g" class="input">
+        <input type="number" id="customProtein" placeholder="Prot/100g" class="input">
+        <input type="number" id="customCarbs" placeholder="Carbs/100g" class="input">
+        <input type="number" id="customFat" placeholder="Fat/100g" class="input">
+      </div>
+      <button id="saveCustom" class="btn">Save Food</button>
+    </section>
+  </div>
+
+  <script src="/static/js/global.js"></script>
+<script src="/static/js/main.js"></script>
+</body>
+</html>

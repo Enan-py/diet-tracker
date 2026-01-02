@@ -1,0 +1,320 @@
+/* -------------------- Base & Layout -------------------- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f7fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+h1.title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2cb67d;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* -------------------- Sections -------------------- */
+section {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    position: relative; /* This is important for the dropdown */
+}
+
+/* -------------------- Inputs & Buttons -------------------- */
+input, button {
+    padding: 10px 12px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    background: #2cb67d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+button:hover {
+    background: #28a36c;
+    transform: translateY(-1px);
+}
+
+button.secondary {
+    background: #2196f3;
+}
+
+/* -------------------- Meal Builder -------------------- */
+.meal-input-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fff;
+    align-items: center;
+    min-height: 60px;
+}
+
+.food-entry {
+    display: flex;
+    align-items: center;
+    background: #e8f5e9;
+    border: 1px solid #2cb67d;
+    border-radius: 50px;
+    padding: 6px 15px;
+    font-size: 0.9rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.food-name { font-weight: 600; margin-right: 8px; }
+
+.gram-input {
+    width: 65px !important;
+    margin: 0 5px !important;
+    padding: 2px 5px !important;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 4px;
+    height: 28px;
+}
+
+.remove-btn {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #ff5252;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* -------------------- Search & Dropdown -------------------- */
+.search-wrapper {
+    position: relative;
+    flex-grow: 1;
+    min-width: 180px;
+}
+
+/* Style the actual input field inside the wrapper */
+#foodQuery {
+    width: 100%;
+    border: none !important;
+    outline: none !important;
+    background: transparent;
+    padding: 10px 5px;
+}
+
+.dropdown {
+    position: absolute;
+    top: 110%; /* Sits just below the bar */
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 9999; /* Ensure it floats OVER the buttons */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.food-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.food-item:hover {
+    background: #f0fdf4;
+    color: #2cb67d;
+}
+
+/* -------------------- Summary Table -------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background: #f4f7fa;
+    color: #666;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* -------------------- Forms & Utils -------------------- */
+.macro-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.advice {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e3f2fd;
+    border-left: 5px solid #2196f3;
+    border-radius: 4px;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* This is what was missing! */
+#search-results {
+    position: absolute;
+    top: 100%; /* Sits exactly under the search bar */
+    left: 0;
+    width: 100%;
+    background-color: white !important; /* Must be white to see it */
+    border: 1px solid #2cb67d; /* Green border to match your theme */
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 9999; /* Ensures it floats on top of everything else */
+    display: none; /* JS will change this to 'block' when you type */
+}
+
+.food-item {
+    padding: 12px;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+.food-item:hover {
+    background-color: #f0fdf4;
+    color: #2cb67d;
+}
+/* Navbar Styles */
+.navbar {
+    background: #fff;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+.nav-content {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+.logo { font-size: 1.5rem; font-weight: bold; color: #2cb67d; }
+.nav-links { display: flex; gap: 20px; }
+.nav-item { text-decoration: none; color: #666; font-weight: 500; transition: 0.2s; }
+.nav-item:hover { color: #2cb67d; }
+
+/* Dashboard Specifics */
+.progress-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: center;
+}
+.stat-circle {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+#remaining-kcal { font-size: 3.5rem; font-weight: 800; color: #2cb67d; line-height: 1; }
+.progress-container {
+    width: 100%;
+    height: 12px;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+.progress-fill {
+    height: 100%;
+    background: #2cb67d;
+    width: 0%;
+    transition: width 0.8s ease-in-out;
+}
+.big-btn {
+    padding: 20px !important;
+    font-size: 1.1rem !important;
+}
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+.global-progress-container {
+    width: 100%;
+    height: 4px;
+    background: #e0e0e0;
+    position: relative;
+    overflow: hidden;
+}
+
+.global-progress-fill {
+    height: 100%;
+    background: #2cb67d;
+    width: 0%; /* JS will update this */
+    transition: width 0.5s ease;
+}
+.history-grid {
+    display: grid;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.history-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 5px solid #2cb67d;
+}
+
+.history-date {
+    font-weight: bold;
+    color: #333;
+}
+
+.success-btn {
+    background-color: #2cb67d !important;
+    color: white;
+}

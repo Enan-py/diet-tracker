@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History | DietTracker</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <span class="logo">🍏 DietTracker</span>
+            <div class="nav-links">
+                <a href="/" class="nav-item">Home</a>
+                <a href="/diet" class="nav-item">Add Meal</a>
+                <a href="/info" class="nav-item">Profile</a>
+                <a href="/summary" class="nav-item active">History</a>
+            </div>
+        </div>
+        <div class="global-progress-container">
+            <div id="global-progress-fill" class="global-progress-fill"></div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Your Diet History</h1>
+            <p>Track your consistency over time.</p>
+        </div>
+
+        <div id="history-list" class="history-grid">
+            </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <button onclick="window.location.href='/diet'" class="btn big-btn">Add Today's Meal</button>
+        </div>
+    </div>
+
+    <script src="/static/js/global.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const history = JSON.parse(localStorage.getItem('dietHistory')) || [];
+            const container = document.getElementById('history-list');
+
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 40px; color: #666;">
+                        <h3>No logs yet!</h3>
+                        <p>Go to the Home page and click "Finish & Save Day" to add your first entry.</p>
+                    </div>`;
+                return;
+            }
+
+            // Show newest first
+            history.reverse().forEach(entry => {
+                const card = document.createElement('div');
+                card.className = 'history-card';
+                
+                // Detailed Card Layout
+                card.innerHTML = `
+                    <div class="history-date">
+                        <h3>${entry.date}</h3>
+                    </div>
+                    <div class="history-stats-grid">
+                        <div class="stat-box">
+                            <span class="stat-label">Calories</span>
+                            <span class="stat-val">${entry.calories}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Protein</span>
+                            <span class="stat-val">${entry.protein}g</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Carbs</span>
+                            <span class="stat-val">${entry.carbs}g</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Fat</span>
+                            <span class="stat-val">${entry.fat}g</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | MyDietTracker</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+    <div class="nav-content">
+        <span class="logo">🍏 DietTracker</span>
+        <div class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="/diet" class="nav-item">Add Meal</a>
+            <a href="/info" class="nav-item">Profile</a>
+            <a href="/summary" class="nav-item">History</a>
+        </div>
+    </div>
+    <div class="global-progress-container">
+        <div id="global-progress-fill" class="global-progress-fill"></div>
+    </div>
+</nav>
+
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>Welcome Back!</h1>
+            <p id="date-display"></p>
+        </header>
+
+        <section class="progress-card">
+            <div class="main-stats">
+                <div class="stat-circle">
+                    <span id="remaining-kcal">0</span>
+                    <small>kcal left</small>
+                </div>
+                <div class="stat-details">
+                    <p>Target: <span id="target-kcal">0</span></p>
+                    <p>Consumed: <span id="consumed-kcal">0</span></p>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div id="kcal-bar" class="progress-fill"></div>
+            </div>
+        </section>
+
+        <div class="action-grid">
+            <button onclick="window.location.href='/diet'" class="btn big-btn">Add a Meal</button>
+            <button onclick="window.location.href='/info'" class="btn secondary big-btn">Update Goals</button>
+            <button onclick="finishDay()" class="btn success-btn">Finish & Save Day</button>
+        </div>
+    </div>
+
+    <script>
+        function finishDay() {
+    // 1. Get today's log
+    const dailyLog = JSON.parse(localStorage.getItem('dailyLog'));
+    
+    if (!dailyLog || dailyLog.consumed === 0) {
+        alert("You haven't logged any food today!");
+        return;
+    }
+
+    if (confirm("Save today's full progress to History and start a new day?")) {
+        // 2. Get existing history
+        let history = JSON.parse(localStorage.getItem('dietHistory')) || [];
+        
+        // 3. Add FULL details (New & Improved)
+        history.push({
+            date: new Date().toLocaleDateString(),
+            calories: dailyLog.consumed,
+            protein: dailyLog.protein || 0,
+            carbs: dailyLog.carbs || 0,
+            fat: dailyLog.fat || 0
+        });
+
+        // 4. Save and Reset
+        localStorage.setItem('dietHistory', JSON.stringify(history));
+        localStorage.removeItem('dailyLog'); // Clear today
+        
+        // Reload to update the UI
+        alert("Day saved!");
+        window.location.href = "/summary";
+    }
+}
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Set Date
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            document.getElementById('date-display').innerText = new Date().toLocaleDateString(undefined, options);
+
+            // 2. Load Stats from LocalStorage
+            const savedStats = JSON.parse(localStorage.getItem('userStats'));
+            const dailyLog = JSON.parse(localStorage.getItem('dailyLog')) || { consumed: 0 };
+
+            if (!savedStats) {
+                window.location.href = '/info'; // Force user to set goals first
+                return;
+            }
+
+            // Calculation logic (same as diet page)
+            const bmr = (10 * savedStats.weight) + (6.25 * savedStats.height) - (5 * savedStats.age) + 5;
+            const tdee = Math.round(bmr * parseFloat(savedStats.activity));
+            const target = savedStats.goal === 'lose' ? tdee - 500 : savedStats.goal === 'gain' ? tdee + 300 : tdee;
+
+            const consumed = dailyLog.consumed;
+            const remaining = target - consumed;
+            const percent = Math.min((consumed / target) * 100, 100);
+
+            // 3. Update UI
+            document.getElementById('target-kcal').innerText = target;
+            document.getElementById('consumed-kcal').innerText = consumed;
+            document.getElementById('remaining-kcal').innerText = remaining > 0 ? remaining : 0;
+            document.getElementById('kcal-bar').style.width = percent + "%";
+            
+            if (percent >= 100) {
+                document.getElementById('kcal-bar').style.background = "#ff5252"; // Red if over
+            }
+        });
+    </script>
+    <script src="/static/js/global.js"></script>
+</body>
+</html>
