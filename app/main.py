@@ -52,14 +52,70 @@ def seed_database():
         if db.query(Food).first() is None:
             print("--- SEEDING DATABASE ---")
             default_foods = [
+                # Meats & Proteins
                 {"name": "Chicken Breast", "calories_per_100g": 165, "protein_per_100g": 31, "carbs_per_100g": 0, "fat_per_100g": 3.6},
-                {"name": "White Rice", "calories_per_100g": 130, "protein_per_100g": 2.7, "carbs_per_100g": 28, "fat_per_100g": 0.3},
+                {"name": "Lean Beef", "calories_per_100g": 250, "protein_per_100g": 26, "carbs_per_100g": 0, "fat_per_100g": 15},
+                {"name": "Mutton (Lamb)", "calories_per_100g": 294, "protein_per_100g": 25, "carbs_per_100g": 0, "fat_per_100g": 21},
+                {"name": "Salmon", "calories_per_100g": 208, "protein_per_100g": 20, "carbs_per_100g": 0, "fat_per_100g": 13},
                 {"name": "Whole Egg", "calories_per_100g": 155, "protein_per_100g": 13, "carbs_per_100g": 1.1, "fat_per_100g": 11},
-                {"name": "Broccoli", "calories_per_100g": 34, "protein_per_100g": 2.8, "carbs_per_100g": 7, "fat_per_100g": 0.4},
+                {"name": "Egg White", "calories_per_100g": 52, "protein_per_100g": 11, "carbs_per_100g": 0.7, "fat_per_100g": 0.2},
+                {"name": "Tuna (Canned)", "calories_per_100g": 132, "protein_per_100g": 28, "carbs_per_100g": 0, "fat_per_100g": 1},
+                {"name": "Paneer", "calories_per_100g": 265, "protein_per_100g": 18, "carbs_per_100g": 1.2, "fat_per_100g": 20},
+                
+                # Grains & Lentils (Dals)
+                {"name": "White Rice (Cooked)", "calories_per_100g": 130, "protein_per_100g": 2.7, "carbs_per_100g": 28, "fat_per_100g": 0.3},
+                {"name": "Brown Rice (Cooked)", "calories_per_100g": 111, "protein_per_100g": 2.6, "carbs_per_100g": 23, "fat_per_100g": 0.9},
+                {"name": "Masoor Dal (Red Lentils)", "calories_per_100g": 116, "protein_per_100g": 9, "carbs_per_100g": 20, "fat_per_100g": 0.4},
+                {"name": "Moong Dal", "calories_per_100g": 105, "protein_per_100g": 7, "carbs_per_100g": 19, "fat_per_100g": 0.3},
+                {"name": "Chana Dal", "calories_per_100g": 160, "protein_per_100g": 9, "carbs_per_100g": 25, "fat_per_100g": 2},
                 {"name": "Oats", "calories_per_100g": 389, "protein_per_100g": 16.9, "carbs_per_100g": 66, "fat_per_100g": 6.9},
+                {"name": "Quinoa (Cooked)", "calories_per_100g": 120, "protein_per_100g": 4.4, "carbs_per_100g": 21, "fat_per_100g": 1.9},
+                {"name": "Whole Wheat Bread", "calories_per_100g": 247, "protein_per_100g": 13, "carbs_per_100g": 41, "fat_per_100g": 3.4},
+                {"name": "White Bread", "calories_per_100g": 265, "protein_per_100g": 9, "carbs_per_100g": 49, "fat_per_100g": 3.2},
+                {"name": "Roti / Chapati", "calories_per_100g": 264, "protein_per_100g": 9, "carbs_per_100g": 55, "fat_per_100g": 1},
+                
+                # Vegetables
+                {"name": "Broccoli", "calories_per_100g": 34, "protein_per_100g": 2.8, "carbs_per_100g": 7, "fat_per_100g": 0.4},
+                {"name": "Spinach", "calories_per_100g": 23, "protein_per_100g": 2.9, "carbs_per_100g": 3.6, "fat_per_100g": 0.4},
+                {"name": "Potato (Boiled)", "calories_per_100g": 87, "protein_per_100g": 1.9, "carbs_per_100g": 20, "fat_per_100g": 0.1},
+                {"name": "Sweet Potato", "calories_per_100g": 86, "protein_per_100g": 1.6, "carbs_per_100g": 20, "fat_per_100g": 0.1},
+                {"name": "Carrot", "calories_per_100g": 41, "protein_per_100g": 0.9, "carbs_per_100g": 10, "fat_per_100g": 0.2},
+                {"name": "Cucumber", "calories_per_100g": 15, "protein_per_100g": 0.7, "carbs_per_100g": 3.6, "fat_per_100g": 0.1},
+                {"name": "Tomato", "calories_per_100g": 18, "protein_per_100g": 0.9, "carbs_per_100g": 3.9, "fat_per_100g": 0.2},
+                {"name": "Onion", "calories_per_100g": 40, "protein_per_100g": 1.1, "carbs_per_100g": 9, "fat_per_100g": 0.1},
+                {"name": "Bell Pepper", "calories_per_100g": 20, "protein_per_100g": 0.9, "carbs_per_100g": 4.6, "fat_per_100g": 0.2},
+                {"name": "Cauliflower", "calories_per_100g": 25, "protein_per_100g": 1.9, "carbs_per_100g": 5, "fat_per_100g": 0.3},
+                
+                # Fruits
                 {"name": "Banana", "calories_per_100g": 89, "protein_per_100g": 1.1, "carbs_per_100g": 23, "fat_per_100g": 0.3},
+                {"name": "Apple", "calories_per_100g": 52, "protein_per_100g": 0.3, "carbs_per_100g": 14, "fat_per_100g": 0.2},
+                {"name": "Orange", "calories_per_100g": 47, "protein_per_100g": 0.9, "carbs_per_100g": 12, "fat_per_100g": 0.1},
+                {"name": "Blueberries", "calories_per_100g": 57, "protein_per_100g": 0.7, "carbs_per_100g": 14, "fat_per_100g": 0.3},
+                {"name": "Avocado", "calories_per_100g": 160, "protein_per_100g": 2, "carbs_per_100g": 9, "fat_per_100g": 15},
+                {"name": "Mango", "calories_per_100g": 60, "protein_per_100g": 0.8, "carbs_per_100g": 15, "fat_per_100g": 0.4},
+                {"name": "Watermelon", "calories_per_100g": 30, "protein_per_100g": 0.6, "carbs_per_100g": 8, "fat_per_100g": 0.2},
+                
+                # Dairy & Fats
+                {"name": "Greek Yogurt (Plain)", "calories_per_100g": 59, "protein_per_100g": 10, "carbs_per_100g": 3.6, "fat_per_100g": 0.4},
+                {"name": "Milk (Whole)", "calories_per_100g": 61, "protein_per_100g": 3.2, "carbs_per_100g": 4.8, "fat_per_100g": 3.3},
+                {"name": "Cheddar Cheese", "calories_per_100g": 403, "protein_per_100g": 25, "carbs_per_100g": 1.3, "fat_per_100g": 33},
+                {"name": "Butter", "calories_per_100g": 717, "protein_per_100g": 0.9, "carbs_per_100g": 0.1, "fat_per_100g": 81},
+                {"name": "Olive Oil", "calories_per_100g": 884, "protein_per_100g": 0, "carbs_per_100g": 0, "fat_per_100g": 100},
+                {"name": "Ghee", "calories_per_100g": 900, "protein_per_100g": 0, "carbs_per_100g": 0, "fat_per_100g": 100},
+                
+                # Nuts & Snacks
+                {"name": "Almonds", "calories_per_100g": 579, "protein_per_100g": 21, "carbs_per_100g": 22, "fat_per_100g": 50},
+                {"name": "Peanuts", "calories_per_100g": 567, "protein_per_100g": 26, "carbs_per_100g": 16, "fat_per_100g": 49},
                 {"name": "Peanut Butter", "calories_per_100g": 588, "protein_per_100g": 25, "carbs_per_100g": 20, "fat_per_100g": 50},
-                {"name": "Greek Yogurt", "calories_per_100g": 59, "protein_per_100g": 10, "carbs_per_100g": 3.6, "fat_per_100g": 0.4}
+                {"name": "Walnuts", "calories_per_100g": 654, "protein_per_100g": 15, "carbs_per_100g": 14, "fat_per_100g": 65},
+                {"name": "Dark Chocolate (70%)", "calories_per_100g": 600, "protein_per_100g": 8, "carbs_per_100g": 45, "fat_per_100g": 43},
+                
+                # Others
+                {"name": "Tofu", "calories_per_100g": 76, "protein_per_100g": 8, "carbs_per_100g": 1.9, "fat_per_100g": 4.8},
+                {"name": "Chickpeas (Boiled)", "calories_per_100g": 164, "protein_per_100g": 8.9, "carbs_per_100g": 27, "fat_per_100g": 2.6},
+                {"name": "Kidney Beans (Boiled)", "calories_per_100g": 127, "protein_per_100g": 8.7, "carbs_per_100g": 23, "fat_per_100g": 0.5},
+                {"name": "Soy Chunks", "calories_per_100g": 345, "protein_per_100g": 52, "carbs_per_100g": 33, "fat_per_100g": 0.5},
+                {"name": "Whey Protein (Powder)", "calories_per_100g": 400, "protein_per_100g": 80, "carbs_per_100g": 5, "fat_per_100g": 3}
             ]
             for f in default_foods:
                 db.add(Food(**f))
