@@ -109,12 +109,6 @@ button.secondary {
 }
 
 /* -------------------- Search & Dropdown -------------------- */
-.search-wrapper {
-    position: relative; /* THIS IS THE ANCHOR */
-    flex-grow: 1;
-    min-width: 180px;
-    background: #fff;
-}
 
 #foodQuery {
     width: 100%;
@@ -125,28 +119,7 @@ button.secondary {
     box-sizing: border-box;
 }
 
-/* We use the ID #search-results because it's more specific than the class */
-#search-results {
-    position: absolute;
-    top: 100%; /* Sits exactly under the wrapper */
-    left: 0;
-    width: 100%;
-    background-color: #ffffff !important;
-    border: 2px solid #2cb67d; 
-    border-top: none;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    max-height: 250px;
-    overflow-y: auto;
-    z-index: 10000; 
-    display: none; /* JS will change this to 'block' */
-    box-sizing: border-box;
-}
 
-/* Ensure that when JS sets display: block, it actually shows up */
-#search-results:not(.hidden) {
-    /* This ensures that if you accidentally have the 'hidden' class, it stays hidden */
-}
 
 /* -------------------- Summary Table -------------------- */
 table {
@@ -191,37 +164,7 @@ th {
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
 }
-#search-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #ffffff !important;
-    border: 2px solid #2cb67d; /* Slightly thicker for visibility */
-    border-top: none;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    max-height: 250px;
-    overflow-y: auto;
-    z-index: 10000; /* Extremely high to stay on top */
-    display: none;
-    box-sizing: border-box; /* CRITICAL: keeps width 100% inside the parent */
-}
 
-.food-item {
-    padding: 15px; /* Bigger "tap target" for fingers */
-    color: #1a1a1a;
-    cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 1rem;
-    transition: background 0.2s;
-    /* Prevents the phone from highlighting the whole block in blue when tapped */
-    -webkit-tap-highlight-color: transparent; 
-}
-
-.food-item:last-child {
-    border-bottom: none;
-}
 
 .food-item:active {
     background-color: #eafaf1; /* Visual feedback for a finger tap */
@@ -324,6 +267,56 @@ th {
     background-color: #2cb67d !important;
     color: white;
 }
+/* --- Optimized Search Section --- */
+.search-wrapper {
+    position: relative; /* CRITICAL: This acts as the anchor for the dropdown */
+    flex-grow: 1;
+    min-width: 180px;
+    background: #fff;
+}
+
+#search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff !important;
+    border: 2px solid #2cb67d; 
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 10000; 
+    display: none; /* Hidden by default */
+    box-sizing: border-box;
+}
+
+/* The "Magic" class that makes it appear */
+#search-results.show {
+    display: block !important;
+}
+
+.food-item {
+    padding: 15px; 
+    color: #1a1a1a;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 1rem;
+    transition: background 0.2s;
+    -webkit-tap-highlight-color: transparent; 
+}
+
+/* Keeps the bottom of the list clean */
+.food-item:last-child {
+    border-bottom: none;
+}
+
+/* Feedback for mouse and finger touches */
+.food-item:hover, .food-item:active {
+    background-color: #eafaf1; 
+}
+
 /* Mobile Responsive Adjustments */
 @media (max-width: 600px) {
     .container {
@@ -341,12 +334,34 @@ th {
         font-size: 0.9rem;
         gap: 10px;
     }
-
-    /* Make stats grid stack or fit better */
-    .history-stats-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2x2 grid on mobile */
-    }
     .action-grid {
     grid-template-columns: 1fr; /* Stack buttons on top of each other on mobile */
+    }
+}
+.history-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on PC */
+    gap: 10px;
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+.stat-val { font-weight: bold; color: #2cb67d; }
+
+/* Responsive: 2x2 grid for phones */
+@media (max-width: 600px) {
+    .history-card { flex-direction: column; align-items: flex-start; }
+    .history-stats-grid { 
+        width: 100%; 
+        margin-left: 0; 
+        margin-top: 15px; 
+        grid-template-columns: repeat(2, 1fr); 
     }
 }

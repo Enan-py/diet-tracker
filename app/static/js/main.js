@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const API = "http://127.0.0.1:8000";
+    const API = "https://diet-tracker-production.up.railway.app";
     
     // Elements
     const foodQuery = document.getElementById("foodQuery");
@@ -19,52 +19,39 @@ document.addEventListener("DOMContentLoaded", () => {
     foodQuery.addEventListener("input", async (e) => {
         const query = e.target.value.trim();
         
-        // 1. If empty, hide and stop
         if (query.length < 1) {
             searchResults.innerHTML = "";
-            searchResults.classList.add("hidden");
-            searchResults.style.display = "none";
+            searchResults.classList.remove("show"); // Use only .show
             return;
         }
 
         try {
-            // 2. Fetch data
             const res = await fetch(`${API}/food/search?query=${query}`);
             const foods = await res.json();
             
-            // 3. Clear the box
             searchResults.innerHTML = "";
 
             if (foods.length > 0) {
-                // 4. Build the list
                 foods.forEach(food => {
                     const div = document.createElement("div");
                     div.className = "food-item";
-                    div.style.padding = "12px"; // Force height
-                    div.style.borderBottom = "1px solid #eee";
-                    div.style.cursor = "pointer";
                     div.textContent = food.name;
                     
                     div.onclick = () => {
                         addFoodToUI(food);
                         foodQuery.value = "";
-                        searchResults.classList.add("hidden");
-                        searchResults.style.display = "none";
+                        searchResults.classList.remove("show");
                     };
                     searchResults.appendChild(div);
                 });
 
-                // 5. FORCE VISIBILITY (The "Magic" fix)
-                searchResults.classList.remove("hidden");
-                searchResults.style.display = "block"; 
-                searchResults.style.visibility = "visible";
-                searchResults.style.opacity = "1";
+                searchResults.classList.add("show"); // The only line needed to show it
             } else {
-                searchResults.classList.add("hidden");
-                searchResults.style.display = "none";
+                searchResults.classList.remove("show");
             }
         } catch (err) {
             console.error("Search error:", err);
+            // This usually means CORS or the Backend is down
         }
     });
 
@@ -141,6 +128,22 @@ calculateBtn.onclick = async () => {
         let dailyLog = JSON.parse(localStorage.getItem('dailyLog')) || { 
             date: today, consumed: 0, protein: 0, carbs: 0, fat: 0 
         };
+        const tbody = document.querySelector("#meal-table tbody");
+if (tbody && data.breakdown) { // Only run if the table exists on this page
+    tbody.innerHTML = ""; 
+    data.breakdown.forEach(item => {
+        const row = `<tr>
+            <td>${item.name}</td>
+            <td>${item.grams}g</td>
+            <td>${Math.round(item.calories)}</td>
+            <td>${item.protein}g</td>
+            <td>${item.carbs}g</td>
+            <td>${item.fat}g</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+
 
         // Reset if it's a new day
         if (dailyLog.date !== today) {
