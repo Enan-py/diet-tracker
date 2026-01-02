@@ -4,42 +4,34 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
+
+# Import the SessionLocal to use in seeding
 try:
-    from app.database import engine, Base, get_db
+    from app.database import engine, Base, get_db, SessionLocal
     from app.models import Food, User
     from app.schemas import (
-        FoodCreate,
-        FoodResponse,
-        DietInput,
-        DietResult,
-        UserInput,
-        PredictionResponse,
-        GoalInput,
+        FoodCreate, FoodResponse, DietInput, DietResult,
+        UserInput, PredictionResponse, GoalInput,
     )
     from app.calcs import (
-        calculate_bmr,
-        calculate_tdee,
-        goal_calories,
-        get_macro_targets,
+        calculate_bmr, calculate_tdee, goal_calories, get_macro_targets,
     )
-except ImportError:
-    print("Local imports failed, but continuing to load routes...")
+except ImportError as e:
+    print(f"Import failed: {e}")
 
 # -------------------------------------------------
-# App init
+# App Init
 # -------------------------------------------------
-
 app = FastAPI(title="Fitness Backend API")
-# This finds the 'static' folder inside your 'app' folder
+
+# Setup Static Files
 current_dir = os.path.dirname(os.path.abspath(__file__))
 static_path = os.path.join(current_dir, "static")
 
-# 1. Mount the static folder so CSS/JS can be found
 if os.path.exists(static_path):
     app.mount("/static", StaticFiles(directory=static_path), name="static")
 else:
     print(f"WARNING: Static path not found at {static_path}")
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -49,8 +41,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(bind=engine)
+# -------------------------------------------------
+# Database Seeding Logic
+# -------------------------------------------------
+def seed_database():
+    # We create a local session specifically for the seed
+    db = SessionLocal()
+    try:
+        # Check if the Food table is empty
+        if db.query(Food).first() is None:
+            print("--- SEEDING DATABASE ---")
+            default_foods = [
+                {"name": "Chicken Breast", "calories_per_100g": 165, "protein_per_100g": 31, "carbs_per_100g": 0, "fat_per_100g": 3.6},
+                {"name": "White Rice", "calories_per_100g": 130, "protein_per_100g": 2.7, "carbs_per_100g": 28, "fat_per_100g": 0.3},
+                {"name": "Whole Egg", "calories_per_100g": 155, "protein_per_100g": 13, "carbs_per_100g": 1.1, "fat_per_100g": 11},
+                {"name": "Broccoli", "calories_per_100g": 34, "protein_per_100g": 2.8, "carbs_per_100g": 7, "fat_per_100g": 0.4},
+                {"name": "Oats", "calories_per_100g": 389, "protein_per_100g": 16.9, "carbs_per_100g": 66, "fat_per_100g": 6.9},
+                {"name": "Banana", "calories_per_100g": 89, "protein_per_100g": 1.1, "carbs_per_100g": 23, "fat_per_100g": 0.3},
+                {"name": "Peanut Butter", "calories_per_100g": 588, "protein_per_100g": 25, "carbs_per_100g": 20, "fat_per_100g": 50},
+                {"name": "Greek Yogurt", "calories_per_100g": 59, "protein_per_100g": 10, "carbs_per_100g": 3.6, "fat_per_100g": 0.4}
+            ]
+            for f in default_foods:
+                db.add(Food(**f))
+            db.commit()
+            print("--- SEEDING COMPLETE ---")
+    except Exception as e:
+        print(f"Seed error: {e}")
+    finally:
+        db.close()
 
+# CRITICAL: Create tables first, THEN seed, THEN start routes
+Base.metadata.create_all(bind=engine)
+seed_database()
 
 
 # -------------------------------------------------
@@ -100,9 +122,10 @@ def add_or_update_food(food: FoodCreate, db: Session = Depends(get_db)):
     db.refresh(new_food)
     return new_food
 
-@app.get("/food/search", response_model=list[FoodResponse])
+@app.get("/food/search")
 def search_food(query: str, db: Session = Depends(get_db)):
-    return db.query(Food).filter(Food.name.contains(query.lower())).all()
+    # The % signs are wildcards. They mean "find anything with these letters"
+    return db.query(Food).filter(Food.name.ilike(f"%{query}%")).all()
 
 # -------------------------------------------------
 # Diet

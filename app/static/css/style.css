@@ -292,6 +292,7 @@ th {
     box-sizing: border-box;
 }
 
+
 /* The "Magic" class that makes it appear */
 #search-results.show {
     display: block !important;
@@ -364,4 +365,7 @@ th {
         margin-top: 15px; 
         grid-template-columns: repeat(2, 1fr); 
     }
+}
+.meal-input-container {
+    overflow: visible !important; /* Allows the dropdown to "pop out" of the container */
 }
